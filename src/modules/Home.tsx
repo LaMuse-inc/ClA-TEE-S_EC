@@ -6,11 +6,13 @@ export default function Home() {
   const cat = new URLSearchParams(location.search).get('cat') || 'all'
   const list = cat === 'all' ? products : products.filter(p => p.category === cat)
   return (
-    <section className="grid">
+    <section className="square-list">
       {list.map((p: Product) => (
-        <Link key={p.id} to={`/items/${p.id}`} className="card">
-          <img src={p.image} alt={p.name} loading="lazy" />
-          <div className="card-body">
+        <Link key={p.id} to={`/items/${p.id}`} className="square-card">
+          <div className="square-thumb">
+            <img src={p.image} alt={p.name} loading="lazy" />
+          </div>
+          <div className="square-meta">
             <div className="name">{p.name}</div>
             <div className="price">¥{p.price.toLocaleString()}</div>
           </div>
