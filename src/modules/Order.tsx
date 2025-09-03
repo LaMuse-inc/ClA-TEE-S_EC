@@ -1,27 +1,33 @@
-import { useNavigate, useLocation } from 'react-router-dom'
-import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useMemo, useEffect, useState } from 'react'
 import products from '../store/products'
+
+type OrderData = {
+  productId: string
+  productName: string
+  price: number
+  quantities: { [key: string]: number }
+  totalQuantity: number
+  totalPrice: number
+}
 
 export default function Order() {
   const navigate = useNavigate()
-  const location = useLocation()
+  const [orderData, setOrderData] = useState<OrderData | null>(null)
   
-  const orderInfo = useMemo(() => {
-    const params = new URLSearchParams(location.search)
-    const productId = params.get('product')
-    const qty = parseInt(params.get('qty') || '1')
-    const product = products.find(p => p.id === productId)
-    
-    if (!product) return null
-    
-    return {
-      product,
-      qty,
-      total: product.price * qty
+  useEffect(() => {
+    const savedOrderData = sessionStorage.getItem('orderData')
+    if (savedOrderData) {
+      setOrderData(JSON.parse(savedOrderData))
     }
-  }, [location.search])
+  }, [])
   
-  if (!orderInfo) {
+  const product = useMemo(() => {
+    if (!orderData) return null
+    return products.find(p => p.id === orderData.productId)
+  }, [orderData])
+  
+  if (!orderData || !product) {
     return (
       <div className="form">
         <h1>注文情報が見つかりません</h1>
@@ -34,10 +40,8 @@ export default function Order() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
-    const orderData = {
-      product: orderInfo.product,
-      qty: orderInfo.qty,
-      total: orderInfo.total,
+    const finalOrderData = {
+      ...orderData,
       customer: {
         name: formData.get('name'),
         email: formData.get('email'),
@@ -46,7 +50,7 @@ export default function Order() {
       }
     }
     // 注文データをセッションストレージに保存
-    sessionStorage.setItem('orderData', JSON.stringify(orderData))
+    sessionStorage.setItem('orderData', JSON.stringify(finalOrderData))
     navigate('/payment')
   }
   
@@ -57,16 +61,36 @@ export default function Order() {
       {/* 注文内容の表示 */}
       <div style={{background:'#f9fafb', padding:'16px', borderRadius:'8px', margin:'16px 0'}}>
         <h3 style={{margin:'0 0 12px 0'}}>注文内容</h3>
-        <div style={{display:'flex', alignItems:'center', gap:'12px', marginBottom:'8px'}}>
-          <img src={orderInfo.product.image} alt={orderInfo.product.name} style={{width:'48px', height:'48px'}} />
+        <div style={{display:'flex', alignItems:'center', gap:'12px', marginBottom:'12px'}}>
+          <img src={product.image} alt={product.name} style={{width:'48px', height:'48px'}} />
           <div>
-            <div style={{fontWeight:'600'}}>{orderInfo.product.name}</div>
-            <div style={{color:'#6B7280', fontSize:'14px'}}>{orderInfo.product.description}</div>
+            <div style={{fontWeight:'600'}}>{product.name}</div>
+            <div style={{color:'#6B7280', fontSize:'14px'}}>{product.description}</div>
           </div>
         </div>
-        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-          <span>¥{orderInfo.product.price.toLocaleString()} × {orderInfo.qty}枚</span>
-          <span style={{fontWeight:'700', fontSize:'18px'}}>合計: ¥{orderInfo.total.toLocaleString()}</span>
+        
+        {/* 色・サイズ別数量の詳細表示 */}
+        <div style={{marginBottom:'12px'}}>
+          <h4 style={{margin:'0 0 8px 0', fontSize:'14px', fontWeight:'600'}}>選択内容:</h4>
+          <div style={{display:'grid', gap:'4px'}}>
+            {Object.entries(orderData.quantities)
+              .filter(([_, qty]) => qty > 0)
+              .map(([key, qty]) => {
+                const [color, size] = key.split('-')
+                return (
+                  <div key={key} style={{display:'flex', justifyContent:'space-between', fontSize:'14px'}}>
+                    <span>{color} / {size}</span>
+                    <span>{qty}枚</span>
+                  </div>
+                )
+              })
+            }
+          </div>
+        </div>
+        
+        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', borderTop:'1px solid #e5e7eb', paddingTop:'8px'}}>
+          <span>¥{orderData.price.toLocaleString()} × {orderData.totalQuantity}枚</span>
+          <span style={{fontWeight:'700', fontSize:'18px'}}>合計: ¥{orderData.totalPrice.toLocaleString()}</span>
         </div>
       </div>
       
