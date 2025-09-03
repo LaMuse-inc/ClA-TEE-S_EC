@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
 import Home from './Home'
-import Simulator from './Simulator'
 import ProductDetail from './ProductDetail'
 import Order from './Order'
 import Payment from './Payment'
@@ -34,21 +33,27 @@ function CategoryTabs() {
 
 export default function App() {
   return (
-    <div className="container">
-      {/* 以前のヘッダー（ロゴ・セクション）は削除 */}
-      <CategoryTabs />
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/items/:id" element={<ProductDetail />} />
-          <Route path="/simulator" element={<Simulator />} />
-          <Route path="/order" element={<Order />} />
-          <Route path="/payment" element={<Payment />} />
-          <Route path="/payment/confirm" element={<PaymentConfirm />} />
-          <Route path="/complete" element={<div className="form"><h1>ご注文ありがとうございました</h1><p>担当者よりご連絡いたします。</p></div>} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </main>
+    <div className="app-container">
+      <header className="app-header">
+        <div className="header-content">
+          <h1 className="app-title">商品・デザインテンプレート一覧</h1>
+          <p className="app-subtitle">お気に入りの商品を見つけよう！</p>
+        </div>
+      </header>
+      <div className="container">
+        <CategoryTabs />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/items/:id" element={<ProductDetail />} />
+            <Route path="/order" element={<Order />} />
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/payment/confirm" element={<PaymentConfirm />} />
+            <Route path="/complete" element={<div className="form"><h1>ご注文ありがとうございました</h1><p>担当者よりご連絡いたします。</p><button className="btn primary" onClick={() => window.location.href = '/'}>新しい注文をする</button></div>} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+      </div>
     </div>
   )
 }
