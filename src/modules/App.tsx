@@ -4,6 +4,8 @@ import ProductDetail from './ProductDetail'
 import Order from './Order'
 import Payment from './Payment'
 import PaymentConfirm from './PaymentConfirm'
+import PaymentDedicated from './PaymentDedicated'
+import PinkProductPage from './PinkProductPage'
 
 function CategoryTabs() {
   const navigate = useNavigate()
@@ -15,6 +17,8 @@ function CategoryTabs() {
     { key: 'polo', label: 'ポロシャツ' },
     { key: 'soccer', label: 'サッカー' },
     { key: 'basket', label: 'バスケ' },
+    { key: 'baseball', label: '野球' },
+    { key: 'volleyball', label: 'バレーボール' },
   ]
   const go = (key: string) => {
     const qs = key === 'all' ? '' : `?cat=${key}`
@@ -23,7 +27,7 @@ function CategoryTabs() {
   return (
     <div className="tabs" role="tablist" aria-label="カテゴリ">
       {tabs.map(t => (
-        <button key={t.key} role="tab" aria-selected={current===t.key} className={`tab${current===t.key ? ' active':''}`} onClick={()=>go(t.key)}>
+        <button key={t.key} role="tab" aria-selected={current===t.key} className={`tab${current===t.key ? ' active':''}${t.key === 'tshirt' ? ' T' : ''}`} onClick={()=>go(t.key)}>
           {t.label}
         </button>
       ))}
@@ -36,8 +40,8 @@ export default function App() {
     <div className="app-container">
       <header className="app-header">
         <div className="header-content">
-          <h1 className="app-title">商品・デザインテンプレート一覧</h1>
-          <p className="app-subtitle">お気に入りの商品を見つけよう！</p>
+          <h1 className="app-title">決済専用ページ</h1>
+          <p className="app-subtitle">こちらのページからお支払いください</p>
         </div>
       </header>
       <div className="container">
@@ -46,8 +50,10 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/items/:id" element={<ProductDetail />} />
+            <Route path="/pink-product" element={<PinkProductPage />} />
             <Route path="/order" element={<Order />} />
             <Route path="/payment" element={<Payment />} />
+            <Route path="/payment-dedicated" element={<PaymentDedicated />} />
             <Route path="/payment/confirm" element={<PaymentConfirm />} />
             <Route path="/complete" element={<div className="form"><h1>ご注文ありがとうございました</h1><p>担当者よりご連絡いたします。</p><button className="btn primary" onClick={() => window.location.href = '/'}>新しい注文をする</button></div>} />
             <Route path="*" element={<Navigate to="/" replace />} />

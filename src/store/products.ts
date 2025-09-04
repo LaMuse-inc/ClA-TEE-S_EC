@@ -10,7 +10,7 @@ export type Product = {
   price: number
   image: string
   description: string
-  category: 'tshirt' | 'polo' | 'soccer' | 'basket'
+  category: 'tshirt' | 'polo' | 'soccer' | 'basket' | 'baseball'
   colors: string[]
   sizes: string[]
   variants: ProductVariant[]
@@ -31,108 +31,145 @@ const generateVariants = (): ProductVariant[] => {
 }
 
 const products: Product[] = [
-  // Tシャツ系
   { 
-    id: 'tshirt-basic', 
-    name: 'Tシャツ（ベーシック）', 
-    price: 980, 
-    image: '/assets/tshirt.svg', 
-    description: 'クラスTの定番', 
-    category: 'tshirt',
+    id: 'baseball-classic', 
+    name: 'ベースボールシャツ（クラシック）', 
+    price: 1980, 
+    image: '/クラT画像/1.png', 
+    description: 'レトロなデザインのベースボールシャツ', 
+    category: 'baseball',
     colors,
     sizes,
     variants: generateVariants()
   },
   { 
-    id: 'tshirt-dry', 
-    name: 'Tシャツ（ドライ）', 
-    price: 1180, 
-    image: '/assets/tshirt.svg', 
-    description: '速乾・軽量で快適', 
-    category: 'tshirt',
-    colors,
-    sizes,
-    variants: generateVariants()
-  },
-  { 
-    id: 'tshirt-long', 
-    name: 'Tシャツ（ロング）', 
-    price: 1280, 
-    image: '/assets/tshirt.svg', 
-    description: '肌寒い時期に最適', 
-    category: 'tshirt',
-    colors,
-    sizes,
-    variants: generateVariants()
-  },
-
-  // ポロシャツ系
-  { 
-    id: 'polo-basic', 
-    name: 'ポロシャツ（ベーシック）', 
-    price: 1480, 
-    image: '/assets/polo.svg', 
-    description: 'きれいめで涼しい', 
-    category: 'polo',
-    colors,
-    sizes,
-    variants: generateVariants()
-  },
-  { 
-    id: 'polo-pocket', 
-    name: 'ポロシャツ（ポケット付）', 
+    id: 'basket-1', 
+    name: 'バスケットボールユニフォーム（タイプ1）', 
     price: 1580, 
-    image: '/assets/polo.svg', 
-    description: 'ちょっと便利な胸ポケット', 
-    category: 'polo',
-    colors,
-    sizes,
-    variants: generateVariants()
-  },
-
-  // サッカー系
-  { 
-    id: 'soccer-pro', 
-    name: 'サッカーユニフォーム（PRO）', 
-    price: 1980, 
-    image: '/assets/soccer.svg', 
-    description: '試合向け高機能モデル', 
-    category: 'soccer',
+    image: '/クラT画像/バスケ1.png', 
+    description: 'スタンダードなバスケットボールユニフォーム', 
+    category: 'basket',
     colors,
     sizes,
     variants: generateVariants()
   },
   { 
-    id: 'soccer-kids', 
-    name: 'サッカーユニフォーム（KIDS）', 
+    id: 'basket-4', 
+    name: 'バスケットボールユニフォーム（タイプ4）', 
+    price: 1580, 
+    image: '/クラT画像/バスケ4.png', 
+    description: 'モダンなバスケットボールユニフォーム', 
+    category: 'basket',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'basket-5', 
+    name: 'バスケットボールユニフォーム（タイプ5）', 
+    price: 1580, 
+    image: '/クラT画像/バスケ5.png', 
+    description: 'プロフェッショナルなバスケットボールユニフォーム', 
+    category: 'basket',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'basket-6', 
+    name: 'バスケットボールユニフォーム（タイプ6）', 
+    price: 1580, 
+    image: '/クラT画像/バスケ6.png', 
+    description: 'エレガントなバスケットボールユニフォーム', 
+    category: 'basket',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'basket-7', 
+    name: 'バスケットボールユニフォーム（タイプ7）', 
+    price: 1580, 
+    image: '/クラT画像/バスケ7.png', 
+    description: 'ダイナミックなバスケットボールユニフォーム', 
+    category: 'basket',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'basket-8', 
+    name: 'バスケットボールユニフォーム（タイプ8）', 
+    price: 1580, 
+    image: '/クラT画像/バスケ8.png', 
+    description: 'スタイリッシュなバスケットボールユニフォーム', 
+    category: 'basket',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+   { 
+     id: 'soccer-2', 
+    name: 'サッカーユニフォーム（タイプ2）', 
     price: 1680, 
-    image: '/assets/soccer.svg', 
-    description: 'ジュニア向けサイズ', 
+    image: '/クラT画像/サッカー2.png', 
+    description: 'スタイリッシュなデザインのサッカーユニフォーム', 
     category: 'soccer',
     colors,
     sizes,
     variants: generateVariants()
   },
-
-  // バスケ系
   { 
-    id: 'basket-pro', 
-    name: 'バスケユニフォーム（PRO）', 
-    price: 1980, 
-    image: '/assets/basket.svg', 
-    description: '動きやすい軽量モデル', 
-    category: 'basket',
+    id: 'soccer-3', 
+    name: 'サッカーユニフォーム（タイプ3）', 
+    price: 1680, 
+    image: '/クラT画像/サッカー3.png', 
+    description: 'クラシックなデザインのサッカーユニフォーム', 
+    category: 'soccer',
     colors,
     sizes,
     variants: generateVariants()
   },
   { 
-    id: 'basket-mesh', 
-    name: 'バスケユニフォーム（メッシュ）', 
+    id: 'soccer-4', 
+    name: 'サッカーユニフォーム（タイプ4）', 
+    price: 1680, 
+    image: '/クラT画像/サッカー4.png', 
+    description: 'モダンなデザインのサッカーユニフォーム', 
+    category: 'soccer',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'soccer-5', 
+    name: 'サッカーユニフォーム（タイプ5）', 
+    price: 1680, 
+    image: '/クラT画像/サッカー5.png', 
+    description: 'エレガントなデザインのサッカーユニフォーム', 
+    category: 'soccer',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'soccer-7', 
+    name: 'サッカーユニフォーム（タイプ7）', 
+    price: 1680, 
+    image: '/クラT画像/サッカー7.png', 
+    description: 'ダイナミックなデザインのサッカーユニフォーム', 
+    category: 'soccer',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'soccer-dry', 
+    name: 'ドライサッカーシャツ', 
     price: 1880, 
-    image: '/assets/basket.svg', 
-    description: '通気性に優れた生地', 
-    category: 'basket',
+    image: '/クラT画像/ドライサッカーシャツ.png', 
+    description: '速乾性に優れたドライサッカーシャツ', 
+    category: 'soccer',
     colors,
     sizes,
     variants: generateVariants()
