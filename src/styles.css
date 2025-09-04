@@ -122,19 +122,23 @@ main{padding-top:8px}
   margin-top: 12px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   background: white;
+  -webkit-overflow-scrolling: touch;
 }
 
 .grid-header {
   display: flex;
   background: #f3f4f6;
   border-bottom: 2px solid #d1d5db;
+  min-width: max-content;
 }
 
 .grid-row {
   display: flex;
   border-bottom: 1px solid #e5e7eb;
+  min-width: max-content;
 }
 
 .grid-row:last-child {
@@ -142,11 +146,14 @@ main{padding-top:8px}
 }
 
 .grid-cell {
-  flex: 1;
-  padding: 8px;
+  flex: 0 0 auto;
+  padding: 20px 24px;
   text-align: center;
   border-right: 1px solid #e5e7eb;
-  min-width: 60px;
+  min-width: 140px;
+  width: 140px;
+  font-size: 16px;
+  white-space: nowrap;
 }
 
 .grid-cell:last-child {
@@ -156,28 +163,37 @@ main{padding-top:8px}
 .header-cell {
   font-weight: bold;
   background: #f3f4f6;
-  font-size: 12px;
+  font-size: 16px;
+  padding: 24px;
+  min-width: 140px;
+  width: 140px;
 }
 
 .color-cell {
   background: #f9fafb;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
+  padding: 24px;
+  min-width: 140px;
+  width: 140px;
 }
 
 .input-cell {
-  padding: 4px;
+  padding: 16px;
   position: relative;
+  min-width: 140px;
+  width: 140px;
 }
 
 .quantity-input {
   width: 100%;
-  padding: 4px;
+  padding: 12px;
   border: 1px solid #d1d5db;
   border-radius: 4px;
   text-align: center;
-  font-size: 14px;
+  font-size: 16px;
   background: white;
+  min-height: 44px;
 }
 
 .quantity-input:focus {
@@ -206,21 +222,111 @@ main{padding-top:8px}
 
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
-  .quantity-grid {
-    font-size: 12px;
+  /* 表以外の要素をモバイルサイズに調整 */
+  .container {
+    padding: 4px;
   }
   
+  .stripe-bg {
+    padding: 8px !important;
+    margin: 4px;
+  }
+  
+  .detail {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .square-thumb {
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+  
+  .square-thumb img {
+    width: 100%;
+    height: auto;
+    max-width: 250px;
+    margin: 0 auto;
+    display: block;
+  }
+  
+  .panel {
+    gap: 8px;
+    padding: 8px;
+  }
+  
+  .step {
+    gap: 4px;
+  }
+  
+  .step label {
+    font-size: 13px;
+  }
+  
+  h1 {
+    font-size: 18px !important;
+    margin: 4px 0 !important;
+  }
+  
+  p {
+    font-size: 13px !important;
+    margin: 4px 0 !important;
+  }
+  
+  /* 表は横スクロール可能なまま維持 */
+  .quantity-grid {
+    margin-top: 8px;
+  }
+  
+  /* 表のセルサイズは維持（スクロール用） */
   .grid-cell {
-    min-width: 45px;
-    padding: 6px 4px;
+    min-width: 140px;
+    width: 140px;
+    padding: 20px 24px;
+    font-size: 16px;
+  }
+  
+  .header-cell {
+    min-width: 140px;
+    width: 140px;
+    padding: 24px;
+    font-size: 16px;
+  }
+  
+  .color-cell {
+    min-width: 140px;
+    width: 140px;
+    padding: 24px;
+    font-size: 16px;
+  }
+  
+  .input-cell {
+    min-width: 140px;
+    width: 140px;
+    padding: 16px;
   }
   
   .quantity-input {
-    font-size: 12px;
-    padding: 2px;
+    font-size: 16px;
+    padding: 12px;
+    min-height: 44px;
   }
   
   .stock-info {
-    font-size: 9px;
+    font-size: 10px;
+  }
+  
+  /* ボタンとサマリーをモバイル対応 */
+  .summary {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    font-size: 14px;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    min-height: 48px;
   }
 }
