@@ -131,6 +131,7 @@ main{padding-top:8px}
   border: 1px solid #d1d5db;
   border-radius: 8px;
   overflow-x: auto;
+<<<<<<< HEAD
   background: white;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
@@ -139,6 +140,11 @@ main{padding-top:8px}
   max-width: 100%;
   /* white-spaceプロパティを適用して表内容の改行を制御 */
   white-space: nowrap;
+=======
+  overflow-y: hidden;
+  background: white;
+  -webkit-overflow-scrolling: touch;
+>>>>>>> c57019b2e83e3df51d3a8c11e787313e24965e4c
 }
 .quantity-grid::-webkit-scrollbar{height:10px}
 .quantity-grid::-webkit-scrollbar-track{background:#f1f5f9;border-radius:8px}
@@ -158,8 +164,11 @@ main{padding-top:8px}
   display: flex;
   border-bottom: 1px solid #e5e7eb;
   min-width: max-content;
+<<<<<<< HEAD
   /* 表の行内容も改行させない */
   white-space: nowrap;
+=======
+>>>>>>> c57019b2e83e3df51d3a8c11e787313e24965e4c
 }
 
 .grid-row:last-child {
@@ -168,6 +177,7 @@ main{padding-top:8px}
 
 .grid-cell {
   flex: 0 0 auto;
+<<<<<<< HEAD
   min-width: 120px;
   padding: 16px 8px;
   text-align: center;
@@ -177,6 +187,15 @@ main{padding-top:8px}
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 16px;
+=======
+  padding: 20px 24px;
+  text-align: center;
+  border-right: 1px solid #e5e7eb;
+  min-width: 140px;
+  width: 140px;
+  font-size: 16px;
+  white-space: nowrap;
+>>>>>>> c57019b2e83e3df51d3a8c11e787313e24965e4c
 }
 
 .grid-cell:last-child {
@@ -187,30 +206,56 @@ main{padding-top:8px}
   font-weight: bold;
   background: #f3f4f6;
   font-size: 16px;
+<<<<<<< HEAD
   padding: 18px 8px;
+=======
+  padding: 24px;
+  min-width: 140px;
+  width: 140px;
+>>>>>>> c57019b2e83e3df51d3a8c11e787313e24965e4c
 }
 
 .color-cell {
   background: #f9fafb;
   font-weight: 500;
   font-size: 16px;
+<<<<<<< HEAD
   padding: 16px 8px;
 }
 
 .input-cell {
   padding: 8px;
+=======
+  padding: 24px;
+  min-width: 140px;
+  width: 140px;
+}
+
+.input-cell {
+  padding: 16px;
+>>>>>>> c57019b2e83e3df51d3a8c11e787313e24965e4c
   position: relative;
+  min-width: 140px;
+  width: 140px;
 }
 
 .quantity-input {
   width: 100%;
+<<<<<<< HEAD
   padding: 8px;
+=======
+  padding: 12px;
+>>>>>>> c57019b2e83e3df51d3a8c11e787313e24965e4c
   border: 1px solid #d1d5db;
   border-radius: 4px;
   text-align: center;
   font-size: 16px;
   background: white;
+<<<<<<< HEAD
   min-height: 40px;
+=======
+  min-height: 44px;
+>>>>>>> c57019b2e83e3df51d3a8c11e787313e24965e4c
 }
 
 .quantity-input:focus {
@@ -533,11 +578,69 @@ main{padding-top:8px}
 
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
+<<<<<<< HEAD
   .quantity-grid {
     font-size: 12px;
     margin-top: 8px;
+=======
+  /* 表以外の要素をモバイルサイズに調整 */
+  .container {
+    padding: 4px;
+>>>>>>> c57019b2e83e3df51d3a8c11e787313e24965e4c
   }
   
+  .stripe-bg {
+    padding: 8px !important;
+    margin: 4px;
+  }
+  
+  .detail {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .square-thumb {
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+  
+  .square-thumb img {
+    width: 100%;
+    height: auto;
+    max-width: 250px;
+    margin: 0 auto;
+    display: block;
+  }
+  
+  .panel {
+    gap: 8px;
+    padding: 8px;
+  }
+  
+  .step {
+    gap: 4px;
+  }
+  
+  .step label {
+    font-size: 13px;
+  }
+  
+  h1 {
+    font-size: 18px !important;
+    margin: 4px 0 !important;
+  }
+  
+  p {
+    font-size: 13px !important;
+    margin: 4px 0 !important;
+  }
+  
+  /* 表は横スクロール可能なまま維持 */
+  .quantity-grid {
+    margin-top: 8px;
+  }
+  
+  /* 表のセルサイズは維持（スクロール用） */
   .grid-cell {
     min-width: 50px;
     padding: 6px 3px;
@@ -551,7 +654,21 @@ main{padding-top:8px}
   }
   
   .stock-info {
-    font-size: 9px;
+    font-size: 10px;
+  }
+  
+  /* ボタンとサマリーをモバイル対応 */
+  .summary {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    font-size: 14px;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    min-height: 48px;
   }
 
   /* Form and buttons mobile sizing */
