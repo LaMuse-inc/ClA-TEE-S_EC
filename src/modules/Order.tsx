@@ -14,6 +14,12 @@ type OrderData = {
 export default function Order() {
   const navigate = useNavigate()
   const [orderData, setOrderData] = useState<OrderData | null>(null)
+  const [couponCode, setCouponCode] = useState('')
+  const [couponApplied, setCouponApplied] = useState(false)
+  const [discountAmount, setDiscountAmount] = useState(0)
+  const [postalCode, setPostalCode] = useState('')
+  const [address, setAddress] = useState('')
+  const [isSearchingAddress, setIsSearchingAddress] = useState(false)
   
   useEffect(() => {
     const savedOrderData = sessionStorage.getItem('orderData')
@@ -37,11 +43,60 @@ export default function Order() {
     )
   }
   
+  const searchAddressByPostalCode = async (code: string) => {
+    if (code.length !== 7 || !/^\d{7}$/.test(code)) return
+    
+    setIsSearchingAddress(true)
+    try {
+      const response = await fetch(`https://zipcloud.ibsnet.co.jp/api/search?zipcode=${code}`)
+      const data = await response.json()
+      
+      if (data.status === 200 && data.results && data.results.length > 0) {
+        const result = data.results[0]
+        const fullAddress = `${result.address1}${result.address2}${result.address3}`
+        setAddress(fullAddress)
+      } else {
+        alert('郵便番号に対応する住所が見つかりませんでした。')
+      }
+    } catch (error) {
+      console.error('住所検索エラー:', error)
+      alert('住所検索中にエラーが発生しました。')
+    } finally {
+      setIsSearchingAddress(false)
+    }
+  }
+  
+  const handlePostalCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, '')
+    setPostalCode(value)
+    
+    if (value.length === 7) {
+      searchAddressByPostalCode(value)
+    }
+  }
+
+  const applyCoupon = () => {
+    if (couponCode.toLowerCase() === 'discount5') {
+      const discount = Math.floor(orderData!.totalPrice * 0.05)
+      setDiscountAmount(discount)
+      setCouponApplied(true)
+      alert('クーポンが適用されました！5%割引が適用されます。')
+    } else {
+      alert('無効なクーポンコードです。')
+    }
+  }
+
+  const finalPrice = orderData ? orderData.totalPrice - discountAmount : 0
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
     const finalOrderData = {
       ...orderData,
+      totalPrice: finalPrice,
+      originalPrice: orderData!.totalPrice,
+      discountAmount,
+      couponApplied,
       customer: {
         name: formData.get('name'),
         email: formData.get('email'),
@@ -90,14 +145,82 @@ export default function Order() {
         
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', borderTop:'1px solid #e5e7eb', paddingTop:'8px'}}>
           <span>¥{orderData.price.toLocaleString()} × {orderData.totalQuantity}枚</span>
-          <span style={{fontWeight:'700', fontSize:'18px'}}>合計: ¥{orderData.totalPrice.toLocaleString()}</span>
+          <div style={{textAlign:'right'}}>
+            {couponApplied && (
+              <div style={{fontSize:'14px', color:'#059669', marginBottom:'4px'}}>
+                割引: -¥{discountAmount.toLocaleString()}
+              </div>
+            )}
+            <span style={{fontWeight:'700', fontSize:'18px'}}>合計: ¥{finalPrice.toLocaleString()}</span>
+          </div>
         </div>
       </div>
       
       <label>お名前<input required name="name" autoComplete="name" inputMode="text" /></label>
       <label>メール<input type="email" required name="email" autoComplete="email" inputMode="email" /></label>
       <label>電話番号<input type="tel" required name="tel" autoComplete="tel" inputMode="tel" /></label>
-      <label>配送先住所<textarea required rows={3} name="address" autoComplete="street-address" /></label>
+      
+      <label>
+        郵便番号（7桁）
+        <input 
+          type="text" 
+          value={postalCode} 
+          onChange={handlePostalCodeChange}
+          placeholder="1234567" 
+          maxLength={7}
+          inputMode="numeric"
+          style={{marginBottom: '8px'}}
+        />
+        {isSearchingAddress && <div style={{fontSize: '12px', color: '#6B7280'}}>住所を検索中...</div>}
+      </label>
+      
+      <label>
+        配送先住所
+        <textarea 
+          required 
+          rows={3} 
+          name="address" 
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          autoComplete="street-address"
+          placeholder="郵便番号を入力すると自動で住所が入力されます"
+        />
+      </label>
+      
+      <div style={{margin:'16px 0', padding:'16px', border:'1px solid #e5e7eb', borderRadius:'8px', backgroundColor:'#f9fafb'}}>
+        <label style={{display:'block', marginBottom:'8px', fontWeight:'600'}}>クーポンコード</label>
+        <div style={{display:'flex', gap:'8px'}}>
+          <input 
+            type="text" 
+            value={couponCode}
+            onChange={(e) => setCouponCode(e.target.value)}
+            placeholder="クーポンコードを入力"
+            style={{flex:1, padding:'8px', border:'1px solid #d1d5db', borderRadius:'4px'}}
+            disabled={couponApplied}
+          />
+          <button 
+            type="button"
+            onClick={applyCoupon}
+            disabled={couponApplied || !couponCode.trim()}
+            style={{
+              padding:'8px 16px', 
+              backgroundColor: couponApplied ? '#10b981' : '#3b82f6',
+              color:'white', 
+              border:'none', 
+              borderRadius:'4px',
+              cursor: couponApplied || !couponCode.trim() ? 'not-allowed' : 'pointer',
+              opacity: couponApplied || !couponCode.trim() ? 0.6 : 1
+            }}
+          >
+            {couponApplied ? '適用済み' : '適用'}
+          </button>
+        </div>
+        {couponApplied && (
+          <div style={{marginTop:'8px', color:'#059669', fontSize:'14px'}}>
+            ✓ 5%割引が適用されました
+          </div>
+        )}
+      </div>
       
       <p style={{fontSize:'14px', color:'#6B7280', margin:'16px 0'}}>
         ※ 色、テキスト、画像などの詳細なカスタマイズについては、ご注文後にLINEにてご相談ください。

@@ -351,6 +351,13 @@ main{padding-top:8px}
   font-weight: 600;
   color: var(--ink);
   margin-bottom: 8px;
+  height: 48px;
+  line-height: 24px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .product-price {
@@ -368,7 +375,7 @@ main{padding-top:8px}
 }
 
 .size-label {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--ink-light);
 }
@@ -598,6 +605,65 @@ main{padding-top:8px}
     padding: 14px 20px;
     min-height: 52px;
   }
+}
+
+/* Hide specific product image */
+img[src="/クラT画像/1.png"] {
+  display: none;
+}
+
+/* Hide specific product cards */
+.mobile-product-card:has(img[src="/クラT画像/1.png"]) {
+  display: none;
+}
+
+.mobile-product-card:has(img[src="/クラT画像/ドライサッカーシャツ.png"]) {
+  display: none;
+}
+
+.mobile-product-card:has(img[src="/クラT画像/バスケ1.png"]) {
+  display: none;
+}
+
+.mobile-product-card:has(img[src="/クラT画像/バスケ4.png"]) {
+  display: none;
+}
+
+.mobile-product-card:has(img[src="/クラT画像/バスケ5.png"]) {
+  display: none;
+}
+
+.mobile-product-card:has(img[src="/クラT画像/バスケ6.png"]) {
+  display: none;
+}
+
+.mobile-product-card:has(img[src="/クラT画像/バスケ8.png"]) {
+  display: none;
+}
+
+.mobile-product-card:has(img[src="/クラT画像/野球3.png"]) {
+  display: none;
+}
+
+.mobile-product-card:has(img[src="/クラT画像/野球7.png"]) {
+  display: none;
+}
+
+.mobile-product-card:has(img[src="/クラT画像/野球8.png"]) {
+  display: none;
+}
+
+.mobile-product-card:has(img[src="/クラT画像/12けんしんくんのやつ.png"]) {
+  display: none;
+}
+
+.mobile-product-card:has(img[src="/クラT画像/9けんしんくんのやつ.png"]) {
+  display: none;
+}
+
+/* Hide specific tab button on product pages */
+.tab[aria-selected="true"] {
+  display: none;
 }
 
 @media (max-width: 480px) {

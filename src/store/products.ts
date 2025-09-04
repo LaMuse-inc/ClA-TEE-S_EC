@@ -10,7 +10,7 @@ export type Product = {
   price: number
   image: string
   description: string
-  category: 'tshirt' | 'polo' | 'soccer' | 'basket' | 'baseball'
+  category: 'tshirt' | 'polo' | 'soccer' | 'basket' | 'baseball' | 'volleyball'
   colors: string[]
   sizes: string[]
   variants: ProductVariant[]
@@ -32,11 +32,275 @@ const generateVariants = (): ProductVariant[] => {
 
 const products: Product[] = [
   { 
+    id: 'tshirt-class-6', 
+    name: 'クラスTシャツ（タイプ6）', 
+    price: 1480, 
+    image: '/クラT画像/クラスT6.png', 
+    description: 'クラスTシャツデザイン', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-class-7', 
+    name: 'クラスTシャツ（タイプ7）', 
+    price: 1480, 
+    image: '/クラT画像/クラスT7.png', 
+    description: 'クラスTシャツデザイン', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-class-8', 
+    name: 'クラスTシャツ（タイプ8）', 
+    price: 1480, 
+    image: '/クラT画像/クラスT8.png', 
+    description: 'クラスTシャツデザイン', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-class-9', 
+    name: 'クラスTシャツ（タイプ9）', 
+    price: 1480, 
+    image: '/クラT画像/クラスT9.png', 
+    description: 'クラスTシャツデザイン', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-class-10', 
+    name: 'クラスTシャツ（タイプ10）', 
+    price: 1480, 
+    image: '/クラT画像/クラスT10.png', 
+    description: 'クラスTシャツデザイン', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-class-11', 
+    name: 'クラスTシャツ（タイプ11）', 
+    price: 1480, 
+    image: '/クラT画像/クラスT11.png', 
+    description: 'クラスTシャツデザイン', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-class-12', 
+    name: 'クラスTシャツ（タイプ12）', 
+    price: 1480, 
+    image: '/クラT画像/クラスT12.png', 
+    description: 'クラスTシャツデザイン', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-class-13', 
+    name: 'クラスTシャツ（タイプ13）', 
+    price: 1480, 
+    image: '/クラT画像/クラスT13.png', 
+    description: 'クラスTシャツデザイン', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-kenshin-7', 
+    name: 'クラスTシャツ（けんしんタイプ7）', 
+    price: 1480, 
+    image: '/クラT画像/7けんしんくんのやつ.png', 
+    description: 'けんしんくんデザインのクラスTシャツ', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-kenshin-8', 
+    name: 'クラスTシャツ（けんしんタイプ8）', 
+    price: 1480, 
+    image: '/クラT画像/8けんしんくんのやつ.png', 
+    description: 'けんしんくんデザインのクラスTシャツ', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-kenshin-9', 
+    name: 'クラスTシャツ（けんしんタイプ9）', 
+    price: 1480, 
+    image: '/クラT画像/9けんしんくんのやつ.png', 
+    description: 'けんしんくんデザインのクラスTシャツ', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-kenshin-10', 
+    name: 'クラスTシャツ（けんしんタイプ10）', 
+    price: 1480, 
+    image: '/クラT画像/10けんしんくんのやつ.png', 
+    description: 'けんしんくんデザインのクラスTシャツ', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-kenshin-11', 
+    name: 'クラスTシャツ（けんしんタイプ11）', 
+    price: 1480, 
+    image: '/クラT画像/11けんしんくんのやつ.png', 
+    description: 'けんしんくんデザインのクラスTシャツ', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-kenshin-12', 
+    name: 'クラスTシャツ（けんしんタイプ12）', 
+    price: 1480, 
+    image: '/クラT画像/12けんしんくんのやつ.png', 
+    description: 'けんしんくんデザインのクラスTシャツ', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-kenshin-13', 
+    name: 'クラスTシャツ（けんしんタイプ13）', 
+    price: 1480, 
+    image: '/クラT画像/13けんしんくんのやつ.png', 
+    description: 'けんしんくんデザインのクラスTシャツ', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-kenshin-14', 
+    name: 'クラスTシャツ（けんしんタイプ14）', 
+    price: 1480, 
+    image: '/クラT画像/14けんしんくんのやつ.png', 
+    description: 'けんしんくんデザインのクラスTシャツ', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'tshirt-kenshin-15', 
+    name: 'クラスTシャツ（けんしんタイプ15）', 
+    price: 1480, 
+    image: '/クラT画像/15けんしんくんのやつ.png', 
+    description: 'けんしんくんデザインのクラスTシャツ', 
+    category: 'tshirt',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
     id: 'baseball-classic', 
     name: 'ベースボールシャツ（クラシック）', 
     price: 1980, 
     image: '/クラT画像/1.png', 
     description: 'レトロなデザインのベースボールシャツ', 
+    category: 'baseball',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'baseball-1', 
+    name: 'ベースボールユニフォーム（タイプ1）', 
+    price: 1680, 
+    image: '/クラT画像/野球.png', 
+    description: 'スタンダードなベースボールユニフォーム', 
+    category: 'baseball',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'baseball-2', 
+    name: 'ベースボールユニフォーム（タイプ2）', 
+    price: 1680, 
+    image: '/クラT画像/野球2.png', 
+    description: 'モダンなベースボールユニフォーム', 
+    category: 'baseball',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'baseball-3', 
+    name: 'ベースボールユニフォーム（タイプ3）', 
+    price: 1680, 
+    image: '/クラT画像/野球3.png', 
+    description: 'クラシックなベースボールユニフォーム', 
+    category: 'baseball',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'baseball-4', 
+    name: 'ベースボールユニフォーム（タイプ4）', 
+    price: 1680, 
+    image: '/クラT画像/野球4.png', 
+    description: 'プロフェッショナルなベースボールユニフォーム', 
+    category: 'baseball',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'baseball-5', 
+    name: 'ベースボールユニフォーム（タイプ5）', 
+    price: 1680, 
+    image: '/クラT画像/野球5.png', 
+    description: 'エレガントなベースボールユニフォーム', 
+    category: 'baseball',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'baseball-7', 
+    name: 'ベースボールユニフォーム（タイプ7）', 
+    price: 1680, 
+    image: '/クラT画像/野球7.png', 
+    description: 'ダイナミックなベースボールユニフォーム', 
+    category: 'baseball',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'baseball-8', 
+    name: 'ベースボールユニフォーム（タイプ8）', 
+    price: 1680, 
+    image: '/クラT画像/野球8.png', 
+    description: 'スタイリッシュなベースボールユニフォーム', 
     category: 'baseball',
     colors,
     sizes,
@@ -170,6 +434,28 @@ const products: Product[] = [
     image: '/クラT画像/ドライサッカーシャツ.png', 
     description: '速乾性に優れたドライサッカーシャツ', 
     category: 'soccer',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'volleyball-1', 
+    name: 'バレーボールユニフォーム（タイプ1）', 
+    price: 1580, 
+    image: '/クラT画像/バレー.png', 
+    description: 'スタンダードなバレーボールユニフォーム', 
+    category: 'volleyball',
+    colors,
+    sizes,
+    variants: generateVariants()
+  },
+  { 
+    id: 'volleyball-2', 
+    name: 'バレーボールユニフォーム（タイプ2）', 
+    price: 1580, 
+    image: '/クラT画像/バレ-2.png', 
+    description: 'モダンなデザインのバレーボールユニフォーム', 
+    category: 'volleyball',
     colors,
     sizes,
     variants: generateVariants()

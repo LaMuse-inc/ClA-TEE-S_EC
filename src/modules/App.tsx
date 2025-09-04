@@ -11,14 +11,21 @@ function CategoryTabs() {
   const navigate = useNavigate()
   const location = useLocation()
   const current = new URLSearchParams(location.search).get('cat') || 'all'
+  
+  // 決済関連ページではタブを非表示
+  const hideTabsOnPages = ['/payment', '/payment-dedicated', '/payment/confirm', '/order', '/complete']
+  const shouldHideTabs = hideTabsOnPages.some(page => location.pathname.startsWith(page))
+  
+  if (shouldHideTabs) {
+    return null
+  }
+  
   const tabs = [
     { key: 'all', label: 'すべて' },
     { key: 'tshirt', label: 'Tシャツ' },
-    { key: 'polo', label: 'ポロシャツ' },
     { key: 'soccer', label: 'サッカー' },
     { key: 'basket', label: 'バスケ' },
     { key: 'baseball', label: '野球' },
-    { key: 'volleyball', label: 'バレーボール' },
   ]
   const go = (key: string) => {
     const qs = key === 'all' ? '' : `?cat=${key}`
@@ -36,10 +43,17 @@ function CategoryTabs() {
 }
 
 export default function App() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  
+  const handleHeaderClick = () => {
+    navigate('/')
+  }
+  
   return (
     <div className="app-container">
       <header className="app-header">
-        <div className="header-content">
+        <div className="header-content" onClick={handleHeaderClick} style={{cursor: 'pointer'}}>
           <h1 className="app-title">決済専用ページ</h1>
           <p className="app-subtitle">こちらのページからお支払いください</p>
         </div>
