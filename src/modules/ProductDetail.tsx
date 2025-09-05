@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import products, { type ProductVariant } from '../store/products'
+import products, { type ProductVariant, type ProductSpecification } from '../store/products'
 import { useState, useMemo } from 'react'
+import MobileProductSelectorMulti from '../components/MobileProductSelectorMulti'
 
 type QuantityGrid = {
   [key: string]: number // "color-size" をキーとして数量を保存
@@ -48,6 +49,23 @@ export default function ProductDetail() {
   const [showReviewForm, setShowReviewForm] = useState(false)
   const [newReview, setNewReview] = useState({ rating: 5, comment: '' })
   const [reviews, setReviews] = useState<Review[]>(sampleReviews)
+  const [mobileSelection, setMobileSelection] = useState<{
+    color: string | null
+    quantities: { [size: string]: number }
+    specification: ProductSpecification
+    totalQuantity: number
+    totalPrice: number
+    unitPrice: number
+    teacherDiscount: boolean
+  }>({ 
+    color: null, 
+    quantities: {}, 
+    specification: {},
+    totalQuantity: 0, 
+    totalPrice: 0,
+    unitPrice: 0,
+    teacherDiscount: false
+  })
 
   const totalQuantity = useMemo(() => {
     return Object.values(quantities).reduce((sum, qty) => sum + qty, 0)
@@ -77,17 +95,41 @@ export default function ProductDetail() {
   }
 
   const handleOrder = () => {
-    const orderData = {
-      productId: product?.id,
-      productName: product?.name,
-      price: product?.price,
-      quantities,
-      totalQuantity,
-      totalPrice
+    // モバイルビューの場合は複数サイズ選択のデータを使用
+    if (window.innerWidth <= 768 && mobileSelection.totalQuantity > 0) {
+      const mobileQuantities: QuantityGrid = {}
+      Object.entries(mobileSelection.quantities).forEach(([size, qty]) => {
+        if (qty > 0 && mobileSelection.color) {
+          mobileQuantities[`${mobileSelection.color}-${size}`] = qty
+        }
+      })
+      
+      const orderData = {
+        productId: product?.id,
+        productName: product?.name,
+        price: product?.price,
+        unitPrice: mobileSelection.unitPrice,
+        quantities: mobileQuantities,
+        specification: mobileSelection.specification,
+        teacherDiscount: mobileSelection.teacherDiscount,
+        totalQuantity: mobileSelection.totalQuantity,
+        totalPrice: mobileSelection.totalPrice
+      }
+      sessionStorage.setItem('orderData', JSON.stringify(orderData))
+      navigate('/order')
+    } else if (window.innerWidth > 768) {
+      // デスクトップビューの場合は従来のグリッド選択データを使用
+      const orderData = {
+        productId: product?.id,
+        productName: product?.name,
+        price: product?.price,
+        quantities,
+        totalQuantity,
+        totalPrice
+      }
+      sessionStorage.setItem('orderData', JSON.stringify(orderData))
+      navigate('/order')
     }
-    // URLパラメータとして渡すのではなく、sessionStorageに保存
-    sessionStorage.setItem('orderData', JSON.stringify(orderData))
-    navigate('/order')
   }
 
   const handleReviewSubmit = () => {
@@ -178,7 +220,24 @@ export default function ProductDetail() {
       </div>
 
       {/* 4. 購入ボタンと数量選択機能 */}
-       <div className="purchase-section">
+      {/* モバイルビューではMobileProductSelectorMultiを表示 */}
+      <div className="mobile-selector-wrapper">
+        <MobileProductSelectorMulti 
+          product={product}
+          onSelectionChange={setMobileSelection}
+        />
+        {mobileSelection.totalQuantity > 0 && (
+          <button 
+            className="btn primary mobile-purchase-btn" 
+            onClick={handleOrder}
+          >
+            購入手続きへ
+          </button>
+        )}
+      </div>
+
+      {/* デスクトップビューでは従来のグリッドを表示 */}
+       <div className="purchase-section desktop-only">
          <h2>数量選択</h2>
          <div className="quantity-grid">
            <div className="grid-header">

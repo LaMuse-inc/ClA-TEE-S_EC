@@ -7,6 +7,7 @@ export default function Payment() {
   const [method, setMethod] = useState<PaymentMethod>('stripe')
   const [orderData, setOrderData] = useState<any>(null)
   const [isProcessing, setIsProcessing] = useState(false)
+  const [termsAgreed, setTermsAgreed] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
   
@@ -31,7 +32,7 @@ export default function Payment() {
   }
   
   const handlePayment = async () => {
-    if (isProcessing) return
+    if (isProcessing || !termsAgreed) return
     
     setIsProcessing(true)
     
@@ -124,13 +125,107 @@ export default function Payment() {
         </label>
       </div>
       
+      {/* 利用規約同意セクション */}
+      <div style={{
+        margin: '24px 0',
+        padding: '20px',
+        backgroundColor: '#FEF7F0',
+        border: '2px solid #FB923C',
+        borderRadius: '12px'
+      }}>
+        <h3 style={{
+          margin: '0 0 16px 0',
+          color: '#C2410C',
+          fontSize: '16px',
+          fontWeight: '600',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px'
+        }}>
+          <span style={{fontSize: '18px'}}>📋</span>
+          利用規約の同意
+        </h3>
+        
+        <div style={{
+          backgroundColor: '#FFFFFF',
+          padding: '16px',
+          borderRadius: '8px',
+          marginBottom: '16px',
+          border: '1px solid #FED7AA',
+          maxHeight: '200px',
+          overflowY: 'auto',
+          fontSize: '14px',
+          lineHeight: '1.6',
+          color: '#374151'
+        }}>
+          <h4 style={{
+            margin: '0 0 12px 0',
+            color: '#C2410C',
+            fontSize: '14px',
+            fontWeight: '600'
+          }}>利用規約</h4>
+          
+          <p><strong>第1条（サービス内容）</strong></p>
+          <p>本サービスは、カスタムTシャツ及びユニフォームのオンライン注文サービスです。</p>
+          
+          <p><strong>第2条（注文と納期）</strong></p>
+          <p>注文確定後、3-5営業日で製作いたします。繁忙期は納期が延長する場合があります。</p>
+          
+          <p><strong>第3条（キャンセル・返品）</strong></p>
+          <p>カスタム製品のため、お客様都合によるキャンセル・返品は承っておりません。</p>
+          
+          <p><strong>第4条（不良品対応）</strong></p>
+          <p>製造上の不具合による不良品につきましては、無償で交換いたします。</p>
+          
+          <p><strong>第5条（個人情報の取り扱い）</strong></p>
+          <p>お客様の個人情報は、注文処理・配送・アフターサービスの目的のみに使用し、第三者への提供はいたしません。</p>
+        </div>
+        
+        <label style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '12px',
+          cursor: 'pointer',
+          userSelect: 'none',
+          padding: '12px',
+          backgroundColor: termsAgreed ? '#FEF3C7' : '#FFFFFF',
+          border: `2px solid ${termsAgreed ? '#F59E0B' : '#E5E7EB'}`,
+          borderRadius: '8px',
+          transition: 'all 0.2s ease'
+        }}>
+          <input
+            type="checkbox"
+            checked={termsAgreed}
+            onChange={(e) => setTermsAgreed(e.target.checked)}
+            style={{
+              width: '18px',
+              height: '18px',
+              marginTop: '2px',
+              accentColor: '#F59E0B'
+            }}
+          />
+          <span style={{
+            fontSize: '14px',
+            fontWeight: '500',
+            color: termsAgreed ? '#92400E' : '#374151',
+            lineHeight: '1.5'
+          }}>
+            上記利用規約に同意します。
+            <br/>
+            <span style={{fontSize: '12px', color: '#6B7280'}}>
+              ※ 注文を完了するには、利用規約への同意が必要です。
+            </span>
+          </span>
+        </label>
+      </div>
+      
       <button 
         className="btn primary" 
         onClick={handlePayment}
-        disabled={isProcessing}
+        disabled={isProcessing || !termsAgreed}
         style={{
-          opacity: isProcessing ? 0.6 : 1,
-          cursor: isProcessing ? 'not-allowed' : 'pointer',
+          opacity: (isProcessing || !termsAgreed) ? 0.6 : 1,
+          cursor: (isProcessing || !termsAgreed) ? 'not-allowed' : 'pointer',
           position: 'relative'
         }}
       >
@@ -150,6 +245,8 @@ export default function Payment() {
               animation: 'spin 1s linear infinite'
             }}></div>
           </>
+        ) : !termsAgreed ? (
+          '利用規約に同意してください'
         ) : (
           method === 'stripe' ? 'カード決済を開始' : '支払い手続きへ'
         )}

@@ -26,6 +26,7 @@ function CategoryTabs() {
     { key: 'soccer', label: 'サッカー' },
     { key: 'basket', label: 'バスケ' },
     { key: 'baseball', label: '野球' },
+    { key: 'volleyball', label: 'バレー' },
   ]
   const go = (key: string) => {
     const qs = key === 'all' ? '' : `?cat=${key}`

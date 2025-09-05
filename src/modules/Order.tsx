@@ -6,7 +6,10 @@ type OrderData = {
   productId: string
   productName: string
   price: number
+  unitPrice?: number
   quantities: { [key: string]: number }
+  specification?: any
+  teacherDiscount?: boolean
   totalQuantity: number
   totalPrice: number
 }
@@ -20,6 +23,7 @@ export default function Order() {
   const [postalCode, setPostalCode] = useState('')
   const [address, setAddress] = useState('')
   const [isSearchingAddress, setIsSearchingAddress] = useState(false)
+  const [designNumber, setDesignNumber] = useState('')
   
   useEffect(() => {
     const savedOrderData = sessionStorage.getItem('orderData')
@@ -102,7 +106,8 @@ export default function Order() {
         email: formData.get('email'),
         tel: formData.get('tel'),
         address: formData.get('address')
-      }
+      },
+      designNumber
     }
     // 注文データをセッションストレージに保存
     sessionStorage.setItem('orderData', JSON.stringify(finalOrderData))
@@ -222,9 +227,106 @@ export default function Order() {
         )}
       </div>
       
-      <p style={{fontSize:'14px', color:'#6B7280', margin:'16px 0'}}>
-        ※ 色、テキスト、画像などの詳細なカスタマイズについては、ご注文後にLINEにてご相談ください。
-      </p>
+      {/* デザイン入稿案内セクション */}
+      <div style={{
+        margin: '24px 0',
+        padding: '20px',
+        backgroundColor: '#F0F9FF',
+        border: '2px solid #0EA5E9',
+        borderRadius: '12px'
+      }}>
+        <h3 style={{
+          margin: '0 0 16px 0',
+          color: '#0C4A6E',
+          fontSize: '16px',
+          fontWeight: '600',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px'
+        }}>
+          <span style={{fontSize: '20px'}}>📱</span>
+          デザインデータ入稿について
+        </h3>
+        
+        <div style={{
+          backgroundColor: '#FFFFFF',
+          padding: '16px',
+          borderRadius: '8px',
+          marginBottom: '16px',
+          border: '1px solid #E0E7FF'
+        }}>
+          <h4 style={{
+            margin: '0 0 12px 0',
+            color: '#1E40AF',
+            fontSize: '14px',
+            fontWeight: '600'
+          }}>LINEでのデザインデータ入稿手順</h4>
+          
+          <ol style={{
+            margin: '0',
+            paddingLeft: '20px',
+            fontSize: '14px',
+            lineHeight: '1.6',
+            color: '#374151'
+          }}>
+            <li>下記LINE公式アカウントを友達登録してください</li>
+            <li>注文番号とお名前を送信してください</li>
+            <li>デザインデータ（AI・PSD・ PNGなど）を送信</li>
+            <li>デザイン確認後、製作開始いたします</li>
+          </ol>
+        </div>
+        
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          padding: '12px',
+          backgroundColor: '#10B981',
+          color: '#FFFFFF',
+          borderRadius: '8px',
+          marginBottom: '16px'
+        }}>
+          <span style={{fontSize: '20px'}}>💬</span>
+          <div>
+            <div style={{fontWeight: '600', fontSize: '14px'}}>LINE公式アカウント</div>
+            <div style={{fontSize: '12px', opacity: '0.9'}}>ID: @cla-tees-ec</div>
+          </div>
+        </div>
+        
+        <label style={{
+          display: 'block',
+          marginBottom: '8px',
+          fontSize: '14px',
+          fontWeight: '500',
+          color: '#374151'
+        }}>
+          デザイン管理番号（任意）
+        </label>
+        <input
+          type="text"
+          value={designNumber}
+          onChange={(e) => setDesignNumber(e.target.value)}
+          placeholder="デザインの管理番号がある場合はこちらに入力"
+          style={{
+            width: '100%',
+            padding: '12px',
+            border: '2px solid #E0E7FF',
+            borderRadius: '6px',
+            fontSize: '14px',
+            backgroundColor: '#FFFFFF'
+          }}
+        />
+        
+        <p style={{
+          margin: '12px 0 0 0',
+          fontSize: '12px',
+          color: '#6B7280',
+          lineHeight: '1.5'
+        }}>
+          ※ デザインデータがない場合は、テキストやイメージの要望をLINEでお知らせください。<br/>
+          当社デザイナーがオリジナルデザインを作成いたします。
+        </p>
+      </div>
       
       <button className="btn primary" type="submit">お支払いへ進む</button>
     </form>
