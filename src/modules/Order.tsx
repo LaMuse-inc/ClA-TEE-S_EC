@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useMemo, useEffect, useState } from 'react'
-import products from '../store/products'
+import products, { type ProductSpecification } from '../store/products'
 
 type OrderData = {
   productId: string
@@ -8,10 +8,14 @@ type OrderData = {
   price: number
   unitPrice?: number
   quantities: { [key: string]: number }
-  specification?: any
+  specification?: ProductSpecification
   teacherDiscount?: boolean
   totalQuantity: number
   totalPrice: number
+  subtotal?: number
+  discountAmount?: number
+  finalPrice?: number
+  designManagementNumber?: string
 }
 
 export default function Order() {
@@ -107,7 +111,13 @@ export default function Order() {
         tel: formData.get('tel'),
         address: formData.get('address')
       },
-      designNumber
+      designManagementNumber: designNumber,
+      // 商品仕様情報を明確に含める
+      specification: orderData.specification,
+      teacherDiscount: orderData.teacherDiscount,
+      unitPrice: orderData.unitPrice,
+      subtotal: orderData.unitPrice ? orderData.unitPrice * orderData.totalQuantity : orderData.totalPrice,
+      finalPrice: finalPrice
     }
     // 注文データをセッションストレージに保存
     sessionStorage.setItem('orderData', JSON.stringify(finalOrderData))
@@ -129,6 +139,45 @@ export default function Order() {
           </div>
         </div>
         
+        {/* 商品仕様詳細の表示 */}
+        {orderData.specification && (
+          <div style={{marginBottom:'12px', padding:'12px', backgroundColor:'#F0F9FF', borderRadius:'8px', border:'1px solid #E0E7FF'}}>
+            <h4 style={{margin:'0 0 8px 0', fontSize:'14px', fontWeight:'600', color:'#1E40AF'}}>商品仕様:</h4>
+            <div style={{display:'grid', gap:'4px', fontSize:'14px'}}>
+              {orderData.specification.material && (
+                <div style={{display:'flex', justifyContent:'space-between'}}>
+                  <span>素材:</span>
+                  <span style={{fontWeight:'500'}}>
+                    {orderData.specification.material === 'polyester' ? 'ポリエステル' : 'コットン'}
+                  </span>
+                </div>
+              )}
+              {orderData.specification.printLocation && (
+                <div style={{display:'flex', justifyContent:'space-between'}}>
+                  <span>プリント箇所:</span>
+                  <span style={{fontWeight:'500'}}>
+                    {orderData.specification.printLocation === 'front' ? '前面のみ' : '両面印刷'}
+                  </span>
+                </div>
+              )}
+              {orderData.specification.backPrint && (
+                <div style={{display:'flex', justifyContent:'space-between'}}>
+                  <span>背面加工:</span>
+                  <span style={{fontWeight:'500'}}>
+                    {orderData.specification.backPrint === 'none' ? 'なし' : '名前・背番号あり'}
+                  </span>
+                </div>
+              )}
+              {orderData.teacherDiscount && (
+                <div style={{display:'flex', justifyContent:'space-between', color:'#059669'}}>
+                  <span>キャンペーン:</span>
+                  <span style={{fontWeight:'500'}}>先生無料キャンペーン適用</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* 色・サイズ別数量の詳細表示 */}
         <div style={{marginBottom:'12px'}}>
           <h4 style={{margin:'0 0 8px 0', fontSize:'14px', fontWeight:'600'}}>選択内容:</h4>
@@ -148,15 +197,44 @@ export default function Order() {
           </div>
         </div>
         
-        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', borderTop:'1px solid #e5e7eb', paddingTop:'8px'}}>
-          <span>¥{orderData.price.toLocaleString()} × {orderData.totalQuantity}枚</span>
-          <div style={{textAlign:'right'}}>
-            {couponApplied && (
-              <div style={{fontSize:'14px', color:'#059669', marginBottom:'4px'}}>
-                割引: -¥{discountAmount.toLocaleString()}
+        <div style={{borderTop:'1px solid #e5e7eb', paddingTop:'12px'}}>
+          {/* 価格詳細表示 */}
+          <div style={{display:'grid', gap:'4px', fontSize:'14px', marginBottom:'8px'}}>
+            {orderData.unitPrice ? (
+              <div style={{display:'flex', justifyContent:'space-between'}}>
+                <span>単価:</span>
+                <span>¥{orderData.unitPrice.toLocaleString()}</span>
+              </div>
+            ) : (
+              <div style={{display:'flex', justifyContent:'space-between'}}>
+                <span>単価:</span>
+                <span>¥{orderData.price.toLocaleString()}</span>
               </div>
             )}
-            <span style={{fontWeight:'700', fontSize:'18px'}}>合計: ¥{finalPrice.toLocaleString()}</span>
+            <div style={{display:'flex', justifyContent:'space-between'}}>
+              <span>数量:</span>
+              <span>{orderData.totalQuantity}枚</span>
+            </div>
+            <div style={{display:'flex', justifyContent:'space-between', paddingTop:'4px', borderTop:'1px solid #f3f4f6'}}>
+              <span>小計:</span>
+              <span>¥{(orderData.unitPrice ? orderData.unitPrice * orderData.totalQuantity : orderData.totalPrice).toLocaleString()}</span>
+            </div>
+            {orderData.teacherDiscount && orderData.unitPrice && (
+              <div style={{display:'flex', justifyContent:'space-between', color:'#059669'}}>
+                <span>先生無料キャンペーン:</span>
+                <span>-¥{orderData.unitPrice.toLocaleString()}</span>
+              </div>
+            )}
+            {couponApplied && (
+              <div style={{display:'flex', justifyContent:'space-between', color:'#059669'}}>
+                <span>クーポン割引:</span>
+                <span>-¥{discountAmount.toLocaleString()}</span>
+              </div>
+            )}
+          </div>
+          <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', paddingTop:'8px', borderTop:'2px solid #e5e7eb'}}>
+            <span style={{fontWeight:'600', fontSize:'16px'}}>最終合計:</span>
+            <span style={{fontWeight:'700', fontSize:'18px', color:'var(--accent)'}}>¥{finalPrice.toLocaleString()}</span>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import products, { type ProductVariant, type ProductSpecification } from '../store/products'
+import products, { type ProductVariant, type ProductSpecification, calculateTotalPrice } from '../store/products'
 import { useState, useMemo } from 'react'
 import MobileProductSelectorMulti from '../components/MobileProductSelectorMulti'
 
@@ -72,7 +72,9 @@ export default function ProductDetail() {
   }, [quantities])
 
   const totalPrice = useMemo(() => {
-    return product ? product.price * totalQuantity : 0
+    if (!product) return 0
+    // デスクトップビューの場合は従来の固定価格を使用
+    return product.price * totalQuantity
   }, [product, totalQuantity])
 
   const handleQuantityChange = (color: string, size: string, value: string) => {
@@ -230,8 +232,15 @@ export default function ProductDetail() {
           <button 
             className="btn primary mobile-purchase-btn" 
             onClick={handleOrder}
+            disabled={!mobileSelection.color || mobileSelection.unitPrice === 0}
+            style={{
+              opacity: (!mobileSelection.color || mobileSelection.unitPrice === 0) ? 0.6 : 1,
+              cursor: (!mobileSelection.color || mobileSelection.unitPrice === 0) ? 'not-allowed' : 'pointer'
+            }}
           >
-            購入手続きへ
+            {(!mobileSelection.color || mobileSelection.unitPrice === 0) ? 
+              '仕様を選択してください' : '購入手続きへ'
+            }
           </button>
         )}
       </div>

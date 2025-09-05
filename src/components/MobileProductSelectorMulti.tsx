@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import type { Product, ProductVariant, ProductSpecification } from '../store/products'
 import { calculateProductPrice } from '../store/products'
 
@@ -82,7 +82,7 @@ export default function MobileProductSelectorMulti({
     return colorMap[color] || '#E5E7EB'
   }
 
-  const updateSelection = (color: string | null, quantities: { [size: string]: number }, spec: ProductSpecification, discount: boolean) => {
+  const updateSelection = useCallback((color: string | null, quantities: { [size: string]: number }, spec: ProductSpecification, discount: boolean) => {
     const total = Object.values(quantities).reduce((sum, qty) => sum + qty, 0)
     const unit = calculateProductPrice(product, spec)
     const sub = unit * total
@@ -98,7 +98,42 @@ export default function MobileProductSelectorMulti({
       unitPrice: unit,
       teacherDiscount: discount
     })
+  }, [product, onSelectionChange])
+
+  const isCustomProduct = product.productType === 'custom'
+  const isUniformProduct = product.productType === 'uniform'
+
+  const isSpecificationComplete = () => {
+    if (isCustomProduct) {
+      return specification.material && specification.printLocation
+    } else if (isUniformProduct) {
+      return specification.backPrint
+    }
+    return true
   }
+
+  const getSpecificationErrors = useMemo(() => {
+    const errors = []
+    if (!selectedColor) {
+      errors.push('カラーを選択してください')
+    }
+    if (isCustomProduct) {
+      if (!specification.material) {
+        errors.push('素材を選択してください')
+      }
+      if (!specification.printLocation) {
+        errors.push('プリント箇所を選択してください')
+      }
+    } else if (isUniformProduct) {
+      if (!specification.backPrint) {
+        errors.push('背面加工を選択してください')
+      }
+    }
+    if (totalQuantity === 0) {
+      errors.push('数量を選択してください')
+    }
+    return errors
+  }, [selectedColor, isCustomProduct, isUniformProduct, specification, totalQuantity])
 
   const handleSpecificationChange = (key: keyof ProductSpecification, value: any) => {
     const newSpec = { ...specification, [key]: value }
@@ -110,9 +145,6 @@ export default function MobileProductSelectorMulti({
     setTeacherDiscount(discount)
     updateSelection(selectedColor, quantities, specification, discount)
   }
-
-  const isCustomProduct = product.productType === 'custom'
-  const isUniformProduct = product.productType === 'uniform'
 
 
   return (
@@ -177,16 +209,16 @@ export default function MobileProductSelectorMulti({
                 <h4>プリント箇所</h4>
                 <div className="spec-buttons">
                   <button
-                    className={`spec-option ${specification.printArea === 'front' ? 'active' : ''}`}
-                    onClick={() => handleSpecificationChange('printArea', 'front')}
+                    className={`spec-option ${specification.printLocation === 'front' ? 'active' : ''}`}
+                    onClick={() => handleSpecificationChange('printLocation', 'front')}
                     type="button"
                   >
                     <div className="spec-label">前面のみ</div>
                     <div className="spec-price">¥1,500</div>
                   </button>
                   <button
-                    className={`spec-option ${specification.printArea === 'both' ? 'active' : ''}`}
-                    onClick={() => handleSpecificationChange('printArea', 'both')}
+                    className={`spec-option ${specification.printLocation === 'both' ? 'active' : ''}`}
+                    onClick={() => handleSpecificationChange('printLocation', 'both')}
                     type="button"
                   >
                     <div className="spec-label">両面印刷</div>
@@ -204,16 +236,16 @@ export default function MobileProductSelectorMulti({
                 <h4>背面加工</h4>
                 <div className="spec-buttons">
                   <button
-                    className={`spec-option ${specification.backProcessing === 'none' ? 'active' : ''}`}
-                    onClick={() => handleSpecificationChange('backProcessing', 'none')}
+                    className={`spec-option ${specification.backPrint === 'none' ? 'active' : ''}`}
+                    onClick={() => handleSpecificationChange('backPrint', 'none')}
                     type="button"
                   >
                     <div className="spec-label">なし</div>
                     <div className="spec-price">¥1,400</div>
                   </button>
                   <button
-                    className={`spec-option ${specification.backProcessing === 'nameNumber' ? 'active' : ''}`}
-                    onClick={() => handleSpecificationChange('backProcessing', 'nameNumber')}
+                    className={`spec-option ${specification.backPrint === 'nameNumber' ? 'active' : ''}`}
+                    onClick={() => handleSpecificationChange('backPrint', 'nameNumber')}
                     type="button"
                   >
                     <div className="spec-label">名前・背番号あり</div>
@@ -292,8 +324,45 @@ export default function MobileProductSelectorMulti({
         </section>
       )}
 
+      {/* エラーメッセージ表示 */}
+      {selectedColor && getSpecificationErrors.length > 0 && (
+        <section className="error-section">
+          <div style={{
+            padding: '12px',
+            backgroundColor: '#FEF2F2',
+            border: '1px solid #FECACA',
+            borderRadius: '8px',
+            marginBottom: '16px'
+          }}>
+            <h4 style={{
+              margin: '0 0 8px 0',
+              color: '#DC2626',
+              fontSize: '14px',
+              fontWeight: '600',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}>
+              <span>⚠️</span>
+              選択が必要な項目があります
+            </h4>
+            <ul style={{
+              margin: '0',
+              paddingLeft: '16px',
+              fontSize: '13px',
+              color: '#B91C1C',
+              lineHeight: '1.5'
+            }}>
+              {getSpecificationErrors.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       {/* 選択内容サマリー */}
-      {totalQuantity > 0 && (
+      {totalQuantity > 0 && isSpecificationComplete() && (
         <section className="selection-summary">
           <h4>選択内容</h4>
           <div className="summary-details">
@@ -313,22 +382,22 @@ export default function MobileProductSelectorMulti({
                     </span>
                   </div>
                 )}
-                {specification.printArea && (
+                {specification.printLocation && (
                   <div className="summary-row">
                     <span className="summary-label">プリント箇所</span>
                     <span className="summary-value">
-                      {specification.printArea === 'front' ? '前面のみ' : '両面印刷'}
+                      {specification.printLocation === 'front' ? '前面のみ' : '両面印刷'}
                     </span>
                   </div>
                 )}
               </>
             )}
             
-            {isUniformProduct && specification.backProcessing && (
+            {isUniformProduct && specification.backPrint && (
               <div className="summary-row">
                 <span className="summary-label">背面加工</span>
                 <span className="summary-value">
-                  {specification.backProcessing === 'none' ? 'なし' : '名前・背番号あり'}
+                  {specification.backPrint === 'none' ? 'なし' : '名前・背番号あり'}
                 </span>
               </div>
             )}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { type ProductSpecification } from '../store/products'
 
 type PaymentMethod = 'stripe' | 'convenience' | 'bank'
 
@@ -66,7 +67,7 @@ export default function Payment() {
     
     // 決済完了後の処理
     sessionStorage.setItem('paymentResult', JSON.stringify(paymentData))
-    alert(`決済が完了しました！\n合計金額: ¥${orderData.totalAmount.toLocaleString()}\n商品数: ${orderData.totalItems}点`)
+    alert(`決済が完了しました！\n合計金額: ¥${(orderData.finalPrice || orderData.totalPrice).toLocaleString()}\n数量: ${orderData.totalQuantity}枚`)
     navigate('/')
   }
   
@@ -76,25 +77,89 @@ export default function Payment() {
       
       {/* 注文内容の確認 */}
       <div style={{background:'#f9fafb', padding:'16px', borderRadius:'8px', margin:'16px 0'}}>
-        <h3 style={{margin:'0 0 12px 0'}}>注文内容</h3>
-        {orderData.products && orderData.products.map((product: any) => {
-          const quantity = orderData.cart[product.id] || 0
-          return (
-            <div key={product.id} style={{display:'flex', alignItems:'center', gap:'12px', marginBottom:'8px', padding:'8px', background:'white', borderRadius:'6px'}}>
-              <img src={product.image} alt={product.name} style={{width:'48px', height:'48px', objectFit:'contain'}} />
-              <div style={{flex:1}}>
-                <div style={{fontWeight:'600'}}>{product.name}</div>
-                <div style={{color:'#6B7280', fontSize:'14px'}}>数量: {quantity}点 × ¥{product.price.toLocaleString()}</div>
-              </div>
-              <div style={{fontWeight:'600', color:'var(--primary)'}}>
-                ¥{(product.price * quantity).toLocaleString()}
+        <h3 style={{margin:'0 0 12px 0'}}>注文内容確認</h3>
+        
+        {/* 商品情報 */}
+        <div style={{marginBottom:'16px', padding:'12px', background:'white', borderRadius:'8px'}}>
+          <div style={{fontWeight:'600', fontSize:'16px', marginBottom:'8px'}}>{orderData.productName}</div>
+          
+          {/* 商品仕様表示 */}
+          {orderData.specification && (
+            <div style={{marginBottom:'12px', padding:'10px', backgroundColor:'#F0F9FF', borderRadius:'6px', border:'1px solid #E0E7FF'}}>
+              <h4 style={{margin:'0 0 8px 0', fontSize:'13px', fontWeight:'600', color:'#1E40AF'}}>仕様詳細:</h4>
+              <div style={{fontSize:'13px', display:'grid', gap:'3px'}}>
+                {orderData.specification.material && (
+                  <div>素材: {orderData.specification.material === 'polyester' ? 'ポリエステル' : 'コットン'}</div>
+                )}
+                {orderData.specification.printLocation && (
+                  <div>プリント: {orderData.specification.printLocation === 'front' ? '前面のみ' : '両面印刷'}</div>
+                )}
+                {orderData.specification.backPrint && (
+                  <div>背面加工: {orderData.specification.backPrint === 'none' ? 'なし' : '名前・背番号あり'}</div>
+                )}
               </div>
             </div>
-          )
-        })}
-        <div style={{textAlign:'right', marginTop:'12px', paddingTop:'12px', borderTop:'1px solid #e5e7eb'}}>
-          <div style={{fontSize:'14px', color:'#6B7280', marginBottom:'4px'}}>商品数: {orderData.totalItems}点</div>
-          <span style={{fontWeight:'700', fontSize:'20px', color:'var(--accent)'}}>合計: ¥{orderData.totalAmount.toLocaleString()}</span>
+          )}
+          
+          {/* サイズ・色別数量 */}
+          {orderData.quantities && (
+            <div style={{marginBottom:'12px'}}>
+              <h4 style={{margin:'0 0 6px 0', fontSize:'13px', fontWeight:'600'}}>選択内容:</h4>
+              <div style={{fontSize:'13px', display:'grid', gap:'2px'}}>
+                {Object.entries(orderData.quantities)
+                  .filter(([_, qty]) => (qty as number) > 0)
+                  .map(([key, qty]) => {
+                    const [color, size] = key.split('-')
+                    return (
+                      <div key={key} style={{display:'flex', justifyContent:'space-between'}}>
+                        <span>{color} / {size}</span>
+                        <span>{qty as number}枚</span>
+                      </div>
+                    )
+                  })
+                }
+              </div>
+            </div>
+          )}
+          
+          {/* 価格詳細 */}
+          <div style={{fontSize:'14px', borderTop:'1px solid #f3f4f6', paddingTop:'8px'}}>
+            <div style={{display:'flex', justifyContent:'space-between', marginBottom:'4px'}}>
+              <span>単価:</span>
+              <span>¥{(orderData.unitPrice || orderData.price).toLocaleString()}</span>
+            </div>
+            <div style={{display:'flex', justifyContent:'space-between', marginBottom:'4px'}}>
+              <span>数量:</span>
+              <span>{orderData.totalQuantity}枚</span>
+            </div>
+            <div style={{display:'flex', justifyContent:'space-between', marginBottom:'4px'}}>
+              <span>小計:</span>
+              <span>¥{(orderData.subtotal || orderData.totalPrice).toLocaleString()}</span>
+            </div>
+            {orderData.teacherDiscount && (
+              <div style={{display:'flex', justifyContent:'space-between', color:'#059669', marginBottom:'4px'}}>
+                <span>先生無料キャンペーン:</span>
+                <span>-¥{(orderData.unitPrice || orderData.price).toLocaleString()}</span>
+              </div>
+            )}
+            {orderData.discountAmount && orderData.discountAmount > 0 && (
+              <div style={{display:'flex', justifyContent:'space-between', color:'#059669', marginBottom:'4px'}}>
+                <span>クーポン割引:</span>
+                <span>-¥{orderData.discountAmount.toLocaleString()}</span>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {/* デザイン管理番号 */}
+        {orderData.designManagementNumber && (
+          <div style={{marginBottom:'12px', padding:'8px', backgroundColor:'#FEF3C7', borderRadius:'6px', border:'1px solid #F59E0B'}}>
+            <div style={{fontSize:'13px', fontWeight:'500', color:'#92400E'}}>デザイン管理番号: {orderData.designManagementNumber}</div>
+          </div>
+        )}
+        
+        <div style={{textAlign:'right', paddingTop:'12px', borderTop:'2px solid #e5e7eb'}}>
+          <span style={{fontWeight:'700', fontSize:'18px', color:'var(--accent)'}}>お支払い金額: ¥{(orderData.finalPrice || orderData.totalPrice).toLocaleString()}</span>
         </div>
       </div>
       
