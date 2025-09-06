@@ -8,6 +8,8 @@ import PaymentDedicated from './PaymentDedicated'
 import PinkProductPage from './PinkProductPage'
 import Tokushoho from './Tokushoho'
 import Terms from './Terms'
+import PrivacyPolicy from './PrivacyPolicy'
+import CustomerSupport from './CustomerSupport'
 import Footer from './Footer'
 
 function CategoryTabs() {
@@ -76,6 +78,8 @@ export default function App() {
             <Route path="/complete" element={<div className="form"><h1>ご注文ありがとうございました</h1><p>担当者よりご連絡いたします。</p><button className="btn primary" onClick={() => window.location.href = '/'}>新しい注文をする</button></div>} />
             <Route path="/tokushoho" element={<Tokushoho />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/support" element={<CustomerSupport />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>

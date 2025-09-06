@@ -2717,3 +2717,207 @@ img[src="/クラT画像/1.png"] {
     font-size: 18px;
   }
 }
+
+/* プライバシーポリシー・顧客サポートページ */
+.legal-content {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.legal-section {
+  margin-bottom: 32px;
+}
+
+.legal-section h2 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1a237e;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.legal-section h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+  margin-top: 16px;
+}
+
+.legal-section p {
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+
+.legal-section ul {
+  margin: 12px 0;
+  padding-left: 24px;
+  color: #555;
+}
+
+.legal-section li {
+  margin-bottom: 8px;
+  line-height: 1.8;
+}
+
+.legal-footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+  text-align: center;
+  color: #666;
+}
+
+.legal-footer p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+/* 顧客サポート専用スタイル */
+.support-contact {
+  background-color: #f8f9ff;
+  border: 1px solid #e3e7ff;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+}
+
+.contact-info {
+  margin: 16px 0;
+}
+
+.email-address {
+  font-size: 18px;
+  color: #1a237e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.email-icon {
+  font-size: 20px;
+}
+
+.faq-item {
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.faq-item h3 {
+  color: #1a237e;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.faq-item p {
+  margin: 0;
+  color: #555;
+}
+
+/* フッタースタイル */
+.app-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #e5e7eb;
+  padding: 24px 0;
+  margin-top: auto;
+}
+
+.footer-content {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 clamp(12px, 4vw, 24px);
+  text-align: center;
+}
+
+.footer-copyright {
+  margin: 0 0 16px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #374151;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.footer-link:hover {
+  color: #1a237e;
+  background-color: #f3f4f6;
+}
+
+.footer-link-icon {
+  font-size: 14px;
+}
+
+.footer-link-separator {
+  color: #d1d5db;
+  font-size: 12px;
+  margin: 0 4px;
+}
+
+@media (max-width: 768px) {
+  .legal-content {
+    padding: 20px;
+  }
+  
+  .legal-section h2 {
+    font-size: 18px;
+  }
+  
+  .email-address {
+    font-size: 16px;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .footer-link-separator {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .legal-content {
+    padding: 16px;
+  }
+  
+  .legal-section {
+    margin-bottom: 24px;
+  }
+  
+  .support-contact {
+    padding: 16px;
+  }
+  
+  .app-footer {
+    padding: 16px 0;
+  }
+}

@@ -15,6 +15,16 @@ export default function Footer() {
             <span className="footer-link-icon">📄</span>
             利用規約
           </Link>
+          <span className="footer-link-separator">|</span>
+          <Link to="/privacy" className="footer-link">
+            <span className="footer-link-icon">🔒</span>
+            プライバシーポリシー
+          </Link>
+          <span className="footer-link-separator">|</span>
+          <Link to="/support" className="footer-link">
+            <span className="footer-link-icon">📧</span>
+            顧客サポート
+          </Link>
         </div>
       </div>
     </footer>
