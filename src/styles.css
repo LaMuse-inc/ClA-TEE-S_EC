@@ -2498,3 +2498,151 @@ img[src="/クラT画像/1.png"] {
     max-width: none;
   }
 }
+
+/* Footer styles */
+.app-footer {
+  background-color: #f7f7f7;
+  padding: 20px 0;
+  margin-top: 40px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.footer-copyright {
+  margin: 0 0 10px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.footer-links {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  color: #1a237e;
+  font-size: 12px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.2s;
+}
+
+.footer-link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.footer-link-icon {
+  font-size: 14px;
+}
+
+.footer-link-separator {
+  color: #ccc;
+  font-size: 12px;
+}
+
+/* 特定商取引法ページ */
+.tokushoho-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 12px;
+  color: #1a237e;
+}
+
+.page-subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 40px;
+}
+
+.legal-table-container {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.legal-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.legal-table th {
+  text-align: left;
+  padding: 16px 20px;
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+  width: 30%;
+  vertical-align: top;
+}
+
+.legal-table td {
+  padding: 16px 20px;
+  color: #555;
+  border-bottom: 1px solid #e0e0e0;
+  line-height: 1.6;
+}
+
+.legal-table tr:last-child th,
+.legal-table tr:last-child td {
+  border-bottom: none;
+}
+
+.legal-table a {
+  color: #1a237e;
+  text-decoration: none;
+}
+
+.legal-table a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .legal-table th,
+  .legal-table td {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+  }
+  
+  .legal-table th {
+    border-bottom: none;
+    background-color: #f9f9f9;
+  }
+  
+  .legal-table td {
+    padding-left: 15px;
+    padding-bottom: 20px;
+  }
+  
+  .legal-table tr {
+    display: block;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .legal-table tr:last-child {
+    border-bottom: none;
+  }
+}
